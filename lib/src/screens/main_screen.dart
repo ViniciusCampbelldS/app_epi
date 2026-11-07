@@ -6,11 +6,11 @@ import '../models/usuario.dart'; // adicionado para importar a classe Usuário
 import 'login_screen.dart'; // para sair
 
 class MainScreen extends StatelessWidget {
-	final Usuario usuario; // adicionado para armazenar o usuário logado
+	final Usuario usuario; // Aula 10 (4) adicionado para armazenar o usuário logado
 		
 	const MainScreen({
 		super.key,
-		required this.usuario // adicionado para receber o usuário logado
+		required this.usuario // Aula 10 (4) adicionado para receber o usuário logado
 		});
 
 	@override
@@ -54,7 +54,7 @@ class MainScreen extends StatelessWidget {
 					 Navigator.push(
 						context,
 						MaterialPageRoute(
-						  builder: (_) => const EpiScreen(),
+						  builder: (_) => EpiScreen(usuario: usuario), // Aula 10 (4)
 						),
 					 );
 				  },
