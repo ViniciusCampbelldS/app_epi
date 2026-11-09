@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../models/emprestimo.dart';
 import 'api_config.dart';
+
 
 class EmprestimoService {
 
@@ -31,5 +33,22 @@ class EmprestimoService {
 
 		// 400: a API explica o motivo (CA vencido, sem estoque...)
 		throw Exception(utf8.decode(response.bodyBytes));
+	}
+
+	// Novo mét.odo para buscar empréstimos do funcionário
+	Future<List<Emprestimo>> listarPorFuncionario(int funcionarioId) async {
+		final response = await http.get(
+			Uri.parse('${ApiConfig.baseUrl}/emprestimos/funcionario/$funcionarioId'),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		);
+
+		if (response.statusCode == 200) {
+			Iterable lista = jsonDecode(utf8.decode(response.bodyBytes));
+			return lista.map((json) => Emprestimo.fromJson(json)).toList();
+		} else {
+			throw Exception('Erro ao carregar os empréstimos: ${utf8.decode(response.bodyBytes)}');
+		}
 	}
 }

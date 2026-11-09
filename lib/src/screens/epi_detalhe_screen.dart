@@ -19,8 +19,7 @@ class EpiDetalheScreen extends StatefulWidget {
       _EpiDetalheScreenState();
 }
 
-class _EpiDetalheScreenState
-    extends State<EpiDetalheScreen> {
+class _EpiDetalheScreenState extends State<EpiDetalheScreen> {
   final formKey = GlobalKey<FormState>();
   final observacaoController = TextEditingController();
   bool carregando = false;
@@ -84,7 +83,7 @@ class _EpiDetalheScreenState
 
     // O app só libera o botão se o EPI puder ser emprestado
     final podeSolicitar =
-        !epi.caVencido && epi.quantidadeDisponivel > 0;
+        !epi.caVencido && epi.quantidadeDisponivel! > 0;
 
     return Scaffold(
       appBar: AppBar(
@@ -114,11 +113,11 @@ class _EpiDetalheScreenState
                         Icons.health_and_safety,
                         size: 80,
                         color: Colors.blue,
-                      ),
-                    );
-                  },
-                ),
-              ),
+                      ), // Icon
+                    ); // Container
+                  }, // errorBuilder: (context, error, stackTrace)
+                ), // Image.network
+              ), // ClipRRect
               const SizedBox(height: 20),
               // Dados do EPI
               Text(
@@ -126,16 +125,16 @@ class _EpiDetalheScreenState
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                ),
-              ),
+                ), // TextStyle
+              ), // Text
               const SizedBox(height: 6),
               Text(
                 epi.categoria,
                 style: const TextStyle(
                   fontSize: 16,
                   color: Colors.grey,
-                ),
-              ),
+                ), // TextStyle
+              ), // Text
               const Divider(height: 30),
               linhaInfo(Icons.verified, 'CA', epi.ca),
               linhaInfo(
@@ -143,19 +142,19 @@ class _EpiDetalheScreenState
                 'Validade do CA',
                 epi.validadeFormatada,
                 cor: epi.caVencido ? Colors.red : null,
-              ),
+              ), // linhaInfo
               linhaInfo(
                 Icons.inventory_2,
                 'Disponível',
                 '${epi.quantidadeDisponivel} un.',
-              ),
+              ), // linhaInfo
               const Divider(height: 30),
 
               // Formulário de solicitação
               Text(
                 'Solicitante: ${widget.usuario.nome} '
                 '(matrícula ${widget.usuario.matricula})',
-              ),
+              ), // Text
               const SizedBox(height: 16),
               TextFormField(
                 controller: observacaoController,
@@ -165,7 +164,7 @@ class _EpiDetalheScreenState
                   labelText: 'Motivo da solicitação',
                   hintText: 'Ex.: capacete atual está trincado',
                   border: OutlineInputBorder(),
-                ),
+                ), // decoration: const InputDecoration
                 validator: (valor) {
                   if (valor == null || valor.trim().isEmpty) {
                     return 'Informe o motivo da solicitação';
@@ -174,8 +173,8 @@ class _EpiDetalheScreenState
                     return 'Escreva pelo menos 5 caracteres';
                   }
                   return null; // null = campo válido
-                },
-              ),
+                }, // validator: (valor)
+              ), // TextFormField
               const SizedBox(height: 8),
 
               // Aviso quando o EPI não pode ser emprestado
@@ -190,9 +189,9 @@ class _EpiDetalheScreenState
                     style: const TextStyle(
                       color: Colors.red,
                       fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+                    ), // TextStyle
+                  ), // TExt
+                ), // Padding
 
               // Botão Solicitar Empréstimo
               SizedBox(
@@ -200,7 +199,7 @@ class _EpiDetalheScreenState
                 child: ElevatedButton.icon(
                   onPressed: (carregando || !podeSolicitar)
                       ? null
-                      : solicitarEmprestimo,
+                      : _confirmarSolicitacao,
                   icon: carregando
                       ? const SizedBox(
                           width: 20,
@@ -208,23 +207,48 @@ class _EpiDetalheScreenState
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
                             color: Colors.white,
-                          ),
-                        )
+                          ), // CircularProgressIndicator
+                        ) // Sizedbox
                       : const Icon(Icons.send),
                   label: const Text('Solicitar Empréstimo'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
                     foregroundColor: Colors.white,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+                  ), // ElevatedButton.styleFrom
+                ), // ElevatedButton.icon
+              ), // SizedBox
+            ], // children
+          ), // Column
+        ), // Form
+      ), // SingleChildScrollView
+    ); // Scaffold
   }
-}
+
+  void _confirmarSolicitacao() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirmação'),
+          content: Text('Confirma a solicitação de "${widget.epi.nome}"?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(), // Fecha o diálogo (Cancelar)
+              child: const Text('Cancelar'),
+            ), // TextButton
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Fecha o diálogo
+                solicitarEmprestimo(); // Chama o mét.odo real que envia para a API <-------<--------
+              }, // onPressed
+              child: const Text('Confirmar'),
+            ), // ElevatedButton
+          ], // actions
+        ); // AlertDialog
+      }, // builder: (BuildContext context)
+    ); // showDialog
+  } // _confirmarSolicitacao
+} // _EpiDetalheScreenState
 
 // Monta uma linha "ícone + rótulo + valor"
 Widget linhaInfo(IconData icone, String rotulo, String valor,

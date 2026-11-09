@@ -136,11 +136,11 @@ class EpiScreen extends StatelessWidget {
 
 								// Exercício 3a: quantidade disponível
 								Text(
-									epi.quantidadeDisponivel > 0
+									epi.quantidadeDisponivel! > 0
 										? 'Disponível: ${epi.quantidadeDisponivel} un.'
 										: 'Sem estoque',
 									style: TextStyle(
-									color: epi.quantidadeDisponivel > 0
+									color: epi.quantidadeDisponivel! > 0
 											? Colors.green.shade700
 											: Colors.orange.shade800,
 									fontWeight: FontWeight.w600,

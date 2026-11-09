@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'meus_emprestimos_screen.dart';
 import 'epi_screen.dart';
 import 'funcionario_screen.dart';
 import '../models/usuario.dart'; // adicionado para importar a classe Usuário
@@ -60,7 +60,7 @@ class MainScreen extends StatelessWidget {
 				  },
 				),
 
-				// Exercício 1d: nova opção no menu lateral
+				// Exercício 1d: Opção Funcionários no menu lateral
 				ListTile(
 				  leading: const Icon(Icons.people),
 				  title: const Text('Funcionários'),
@@ -70,6 +70,20 @@ class MainScreen extends StatelessWidget {
 						MaterialPageRoute(
 						  builder: (_) => const FuncionarioScreen(),
 						),
+						);
+					},
+				),
+				// Opção "Meus Empréstimos" (Exercício 1)
+				ListTile(
+					leading: const Icon(Icons.history), // Ícone de histórico/empréstimos
+					title: const Text('Meus Empréstimos'),
+					onTap: () {
+						Navigator.pop(context); // Fecha o menu lateral (Drawer)
+						Navigator.push(
+							context,
+							MaterialPageRoute(
+								builder: (_) => MeusEmprestimosScreen(usuario: usuario), // Passa o usuário logado
+							),
 						);
 					},
 				),
