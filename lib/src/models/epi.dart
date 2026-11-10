@@ -4,7 +4,7 @@ class Epi {
   final String categoria;
   final String ca;
   final String imagemUrl;
-  final int? quantidadeDisponivel; // Exercício 3a // "int?" pode ser nulo, "int" não.
+  final int? quantidadeDisponivel;// Exercício 3a && "int?" pode ser nulo, que nem Integer.
   final DateTime validadeCa;      // Exercício 3b
   final bool caVencido;           // Exercício 3b
 
