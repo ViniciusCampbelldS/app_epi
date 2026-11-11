@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'meus_emprestimos_screen.dart';
 import 'epi_screen.dart';
 import 'funcionario_screen.dart';
-import '../models/usuario.dart'; // adicionado para importar a classe Usuário
-import 'login_screen.dart'; // para sair
+import 'treinamentos_screen.dart';// Aula 11 (6)
+import '../models/usuario.dart';	// adicionado para importar a classe Usuário
+import 'login_screen.dart';				// para sair
 
 class MainScreen extends StatelessWidget {
 	final Usuario usuario; // Aula 10 (4) adicionado para armazenar o usuário logado
@@ -46,30 +47,41 @@ class MainScreen extends StatelessWidget {
 					 Navigator.pop(context);
 				  },
 				),
-
-				ListTile(
-				  leading: const Icon(Icons.health_and_safety),
-				  title: const Text('EPIs'),
-				  onTap: () {
-					 Navigator.push(
-						context,
-						MaterialPageRoute(
-						  builder: (_) => EpiScreen(usuario: usuario), // Aula 10 (4)
-						),
-					 );
-				  },
-				),
-
 				// Exercício 1d: Opção Funcionários no menu lateral
 				ListTile(
 				  leading: const Icon(Icons.people),
 				  title: const Text('Funcionários'),
-				  onTap: () {
-					 Navigator.push(
-						context,
-						MaterialPageRoute(
-						  builder: (_) => const FuncionarioScreen(),
-						),
+					onTap: () {
+						Navigator.push(
+							context,
+							MaterialPageRoute(
+								builder: (_) => const FuncionarioScreen(),
+							),
+						);
+					},
+				),
+				// Aula 11 (6): treinamentos (todos os perfis)
+				ListTile(
+					leading: const Icon(Icons.school),
+					title: const Text('Treinamentos'),
+					onTap: () {
+						Navigator.push(
+							context,
+							MaterialPageRoute(
+								builder: (_) => TreinamentosScreen(usuario: usuario),
+							),
+						);
+					},
+				),
+				ListTile(
+					leading: const Icon(Icons.health_and_safety),
+					title: const Text('EPIs'),
+					onTap: () {
+						Navigator.push(
+							context,
+							MaterialPageRoute(
+								builder: (_) => EpiScreen(usuario: usuario), // Aula 10 (4)
+							),
 						);
 					},
 				),

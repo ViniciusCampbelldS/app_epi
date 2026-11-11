@@ -14,7 +14,7 @@ class Epi {
     required this.categoria,
     required this.ca,
     required this.imagemUrl,
-    this.quantidadeDisponivel, // Não é o 'required'. Pode ser nulo
+    this.quantidadeDisponivel,    // Não é o 'required'. Pode ser nulo
     required this.validadeCa,
     required this.caVencido,
   });
@@ -32,7 +32,7 @@ class Epi {
       categoria: json['categoria'],
       ca: json['ca'],
       imagemUrl: json['imagemUrl'],
-      quantidadeDisponivel: json['quantidadeDisponivel'] ?? 0, // Se vier nulo do JSON, você pode tratar para assumir 0 por segurança:
+      quantidadeDisponivel: json['quantidadeDisponivel'] ?? 0,  // Se vier nulo do JSON, você pode tratar para assumir 0 por segurança:
       validadeCa: validade,
       // O método isCaVencido() do Java vira o campo "caVencido" no JSON.
       // Se por algum motivo ele não vier, o app calcula pela data.
