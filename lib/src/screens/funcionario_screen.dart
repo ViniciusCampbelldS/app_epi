@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/funcionario.dart';
 import '../services/funcionario_service.dart';
+import 'funcionario_treinamentos_screen.dart';
 
 class FuncionarioScreen extends StatelessWidget {
   const FuncionarioScreen({super.key});
@@ -77,6 +78,15 @@ class FuncionarioScreen extends StatelessWidget {
                   ),
 
                   title: Text(funcionario.nome),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => FuncionarioTreinamentosScreen(
+                            funcionario: funcionario),
+                      ),
+                    );
+                  },
 
                   // Exibe matrícula e setor (a senha NÃO é exibida)
                   subtitle: Text(

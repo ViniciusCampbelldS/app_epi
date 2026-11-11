@@ -40,8 +40,9 @@ class _TreinamentosScreenState extends State<TreinamentosScreen> {
     final realizados = await service.buscarRealizados(widget.usuario.id);
 
     concluidos = {};
+    // A API devolve do mais recente para o mais antigo: vale o primeiro
     for (final r in realizados) {
-      concluidos[r.treinamento.id] = r;
+      concluidos.putIfAbsent(r.treinamento.id, () => r);
     }
   }
 
@@ -53,7 +54,7 @@ class _TreinamentosScreenState extends State<TreinamentosScreen> {
 
   // Abre o PDF do treinamento no navegador / leitor do celular
   Future<void> abrirMaterial(Treinamento t) async {
-    final url = Uri.parse('${ApiConfig.baseUrl}${t.arquivoUrl}');
+    final url = Uri.parse('${ApiConfig.baseUrl}${t.documentosUrl}');
     final abriu = await launchUrl(url, mode: LaunchMode.externalApplication);
 
     if (!abriu && mounted) {
@@ -64,6 +65,27 @@ class _TreinamentosScreenState extends State<TreinamentosScreen> {
   }
 
   Future<void> marcarConcluido(Treinamento t) async {
+    final confirmou = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Concluir treinamento'),
+        content: const Text(
+          'Confirma que você leu o material e concluiu o treinamento?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Cancelar'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('Confirmo'),
+          ),
+        ],
+      ),
+    );
+    if (confirmou != true || !mounted) return;
+
     setState(() {
       processandoId = t.id;
     });
@@ -119,7 +141,7 @@ class _TreinamentosScreenState extends State<TreinamentosScreen> {
           }
 
           final total = treinamentos.length;
-          final feitos = concluidos.length;
+          final feitos = concluidos.values.where((r) => !r.vencido).length;
 
           return Column(
             children: [
@@ -156,7 +178,8 @@ class _TreinamentosScreenState extends State<TreinamentosScreen> {
                   itemBuilder: (context, index) {
                     final t = treinamentos[index];
                     final registro = concluidos[t.id];
-                    final concluido = registro != null;
+                    final concluido = registro != null && !registro.vencido;
+                    final vencido = registro != null && registro.vencido;
 
                     return Card(
                       elevation: 3,
@@ -172,10 +195,14 @@ class _TreinamentosScreenState extends State<TreinamentosScreen> {
                                 Icon(
                                   concluido
                                       ? Icons.check_circle
-                                      : Icons.school,
+                                      : vencido
+                                          ? Icons.warning
+                                          : Icons.school,
                                   color: concluido
                                       ? Colors.green
-                                      : Colors.blue,
+                                      : vencido
+                                          ? Colors.orange
+                                          : Colors.blue,
                                 ),
                                 const SizedBox(width: 10),
                                 Expanded(
@@ -197,13 +224,13 @@ class _TreinamentosScreenState extends State<TreinamentosScreen> {
                               spacing: 8,
                               runSpacing: 8,
                               children: [
-                                if (t.arquivoUrl != null)
+                                if (t.documentosUrl != null)
                                   OutlinedButton.icon(
                                     onPressed: () => abrirMaterial(t),
                                     icon: const Icon(Icons.picture_as_pdf),
                                     label: const Text('Material'),
                                   ),
-                                if (registro != null)
+                                if (concluido)
                                   Chip(
                                     avatar: const Icon(Icons.check,
                                         color: Colors.green),
@@ -212,18 +239,28 @@ class _TreinamentosScreenState extends State<TreinamentosScreen> {
                                     ),
                                     backgroundColor: Colors.green.shade50,
                                   )
-                                else
+                                else ...[
+                                  if (vencido)
+                                    Chip(
+                                      avatar: const Icon(Icons.warning,
+                                          color: Colors.orange),
+                                      label: const Text('Vencido – refazer'),
+                                      backgroundColor: Colors.orange.shade50,
+                                    ),
                                   ElevatedButton.icon(
                                     onPressed: processandoId == null
                                         ? () => marcarConcluido(t)
                                         : null,
                                     icon: const Icon(Icons.task_alt),
-                                    label: const Text('Marcar como Concluído'),
+                                    label: Text(vencido
+                                        ? 'Refazer'
+                                        : 'Marcar como Concluído'),
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.green,
                                       foregroundColor: Colors.white,
                                     ),
                                   ),
+                                ],
                               ],
                             ),
                           ],

@@ -3,6 +3,7 @@ import 'meus_emprestimos_screen.dart';
 import 'epi_screen.dart';
 import 'funcionario_screen.dart';
 import 'treinamentos_screen.dart';// Aula 11 (6)
+import 'cadastrar_treinamento_screen.dart';
 import '../models/usuario.dart';	// adicionado para importar a classe Usuário
 import 'login_screen.dart';				// para sair
 
@@ -73,6 +74,22 @@ class MainScreen extends StatelessWidget {
 						);
 					},
 				),
+				// Só o ADMIN vê esta opção (como na Aula 5)
+				if (usuario.perfil == 'ADMIN')
+					ListTile(
+						leading: const Icon(Icons.add_circle_outline),
+						title: const Text('Cadastrar Treinamento'),
+						onTap: () {
+							Navigator.pop(context);
+							Navigator.push(
+								context,
+								MaterialPageRoute(
+									builder: (_) =>
+										CadastrarTreinamentoScreen(usuario: usuario),
+								),
+							);
+						},
+					),
 				ListTile(
 					leading: const Icon(Icons.health_and_safety),
 					title: const Text('EPIs'),
