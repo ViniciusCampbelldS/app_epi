@@ -5,6 +5,8 @@ class Dashboard {
 	final int caVencidos;
 	final int solicitacoesPendentes;
 	final int treinamentosPendentes;
+	final int funcionariosCadastrados;
+	final int estoqueBaixo;
 
 	Dashboard({
 		required this.episCadastrados,
@@ -13,6 +15,8 @@ class Dashboard {
 		required this.caVencidos,
 		required this.solicitacoesPendentes,
 		required this.treinamentosPendentes,
+		required this.funcionariosCadastrados,
+		required this.estoqueBaixo,
 	});
 
 	// As chaves são as mesmas do Map montado no DashboardService (Java)
@@ -24,6 +28,8 @@ class Dashboard {
 			caVencidos: json['caVencidos'],
 			solicitacoesPendentes: json['solicitacoesPendentes'],
 			treinamentosPendentes: json['treinamentosPendentes'],
+			funcionariosCadastrados: json['funcionariosCadastrados'],
+			estoqueBaixo: json['estoqueBaixo'],
 		);
 	}
 }

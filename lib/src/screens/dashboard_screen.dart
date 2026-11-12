@@ -4,6 +4,7 @@ import '../models/usuario.dart';
 import '../services/dashboard_service.dart';
 import '../widgets/indicador_card.dart';
 import 'epi_screen.dart';
+import 'funcionario_screen.dart';
 import 'meus_emprestimos_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -146,6 +147,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
 										valor: d.treinamentosPendentes,
 										icone: Icons.school,
 										cor: Colors.orange,
+									),
+									IndicadorCard(
+										titulo: 'Funcionários cadastrados',
+										valor: d.funcionariosCadastrados,
+										icone: Icons.people,
+										cor: Colors.teal,
+										onTap: () => abrir(const FuncionarioScreen()),
+									),
+									IndicadorCard(
+										titulo: 'Estoque baixo',
+										valor: d.estoqueBaixo,
+										icone: Icons.production_quantity_limits,
+										cor: Colors.deepOrange,
+										onTap: () => abrir(EpiScreen(usuario: widget.usuario)),
 									),
 								],
 							),
