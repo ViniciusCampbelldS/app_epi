@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'meus_emprestimos_screen.dart';
 import 'epi_screen.dart';
+import 'dashboard_screen.dart';
 import 'funcionario_screen.dart';
 import 'treinamentos_screen.dart';// Aula 11 (6)
 import 'cadastrar_treinamento_screen.dart';
@@ -131,12 +132,14 @@ class MainScreen extends StatelessWidget {
 		),
 	),
 
-		body: Center(
-			child: Text(
-				'Bem-vindo ${usuario.nome}',
-				style: TextStyle(fontSize: 18),
-				), // Text
-			), // Center
+		body: usuario.perfil == 'ADMIN'
+			? DashboardScreen(usuario: usuario)
+			: Center(
+				child: Text(
+					'Bem-vindo ${usuario.nome}',
+					style: TextStyle(fontSize: 18),
+					), // Text
+				), // Center
 		); // Scaffold
 	} // Widget build(BuildContext context)
 } // class MainScreen
