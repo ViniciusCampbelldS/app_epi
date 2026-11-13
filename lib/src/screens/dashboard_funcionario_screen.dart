@@ -64,16 +64,21 @@ class _DashboardFuncionarioScreenState extends State<DashboardFuncionarioScreen>
 								style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
 							),
 							const SizedBox(height: 16),
-							GridView.count(
-								crossAxisCount: 2,
-								crossAxisSpacing: 12,
-								mainAxisSpacing: 12,
-								childAspectRatio: 0.95,
+							GridView(
+								gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+									crossAxisCount: MediaQuery.of(context).size.width >= 1080
+											? 3
+											: (MediaQuery.of(context).size.width >= 400 ? 2 : 1),
+									crossAxisSpacing: 12,
+									mainAxisSpacing: 12,
+									mainAxisExtent: 200,
+								),
 								shrinkWrap: true,
 								physics: const NeverScrollableScrollPhysics(),
 								children: [
 									IndicadorCard(
 										titulo: 'Meus EPIs em uso',
+									imagem: 'epis_emprestados.png',
 										valor: d.episEmUso,
 										icone: Icons.health_and_safety,
 										cor: Colors.blue,
@@ -81,6 +86,7 @@ class _DashboardFuncionarioScreenState extends State<DashboardFuncionarioScreen>
 									),
 									IndicadorCard(
 										titulo: 'Meus treinamentos pendentes',
+									imagem: 'treinamentos_pendentes.jpg',
 										valor: d.treinamentosPendentes,
 										icone: Icons.school,
 										cor: Colors.orange,

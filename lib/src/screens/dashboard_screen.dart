@@ -45,7 +45,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
 	@override
 	Widget build(BuildContext context) {
-		final colunas = MediaQuery.of(context).size.width >= 700 ? 3 : 2;
+		final largura = MediaQuery.of(context).size.width;
+		final colunas = largura >= 700 ? 3 : (largura >= 400 ? 2 : 1);
 		final hoje = DateTime.now();
 
 		return FutureBuilder<Dashboard>(
@@ -100,16 +101,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
 										],
 									),
 								),
-							GridView.count(
-								crossAxisCount: colunas,
-								crossAxisSpacing: 12,
-								mainAxisSpacing: 12,
-								childAspectRatio: colunas == 2 ? 0.95 : 1.6,
+							GridView(
+								gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+									crossAxisCount: colunas,
+									crossAxisSpacing: 12,
+									mainAxisSpacing: 12,
+									mainAxisExtent: 200,
+								),
 								shrinkWrap: true,
 								physics: const NeverScrollableScrollPhysics(),
 								children: [
 									IndicadorCard(
 										titulo: 'EPIs cadastrados',
+									imagem: 'epis_cadastrados.png',
 										valor: d.episCadastrados,
 										icone: Icons.inventory_2,
 										cor: Colors.indigo,
@@ -117,6 +121,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 									),
 									IndicadorCard(
 										titulo: 'EPIs emprestados',
+									imagem: 'epis_emprestados.png',
 										valor: d.episEmprestados,
 										icone: Icons.outbox,
 										cor: Colors.blue,
@@ -124,12 +129,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
 									),
 									IndicadorCard(
 										titulo: 'EPIs devolvidos',
+									imagem: 'epis_devolvidos.png',
 										valor: d.episDevolvidos,
 										icone: Icons.assignment_return,
 										cor: Colors.green,
 									),
 									IndicadorCard(
 										titulo: 'CA vencidos',
+									imagem: 'ca_vencidos.png',
 										valor: d.caVencidos,
 										icone: Icons.gpp_bad,
 										cor: Colors.red,
@@ -137,6 +144,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 									),
 									IndicadorCard(
 										titulo: 'Solicitações pendentes',
+									imagem: 'solicitacoes_pendentes.png',
 										valor: d.solicitacoesPendentes,
 										icone: Icons.pending_actions,
 										cor: Colors.amber,
@@ -144,12 +152,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
 									),
 									IndicadorCard(
 										titulo: 'Treinamentos pendentes',
+									imagem: 'treinamentos_pendentes.jpg',
 										valor: d.treinamentosPendentes,
 										icone: Icons.school,
 										cor: Colors.orange,
 									),
 									IndicadorCard(
 										titulo: 'Funcionários cadastrados',
+									imagem: 'funcionarios_cadastrados.png',
 										valor: d.funcionariosCadastrados,
 										icone: Icons.people,
 										cor: Colors.teal,
@@ -157,6 +167,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 									),
 									IndicadorCard(
 										titulo: 'Estoque baixo',
+									imagem: 'estoque_baixo.jpg',
 										valor: d.estoqueBaixo,
 										icone: Icons.production_quantity_limits,
 										cor: Colors.deepOrange,
